@@ -1,0 +1,107 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Videollamada Dev</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
+  <script type="module" src="./app.js"></script>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial;margin:16px}
+    video{width:48%;max-height:40vh;background:#000;border-radius:8px}
+    .row{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+    .panel{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    label{font-size:14px}
+    input,select,button,textarea{padding:6px 10px;border-radius:8px;font-family:inherit}
+    textarea{width:100%;min-width:240px}
+    .card{border:1px solid #ddd;border-radius:10px;padding:12px;margin-bottom:16px;background:#fafafa}
+    .hidden{display:none}
+    .list{display:flex;flex-direction:column;gap:8px}
+    .waiting-item{border:1px solid #ccc;padding:8px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+    #statusMessage{min-height:24px;margin-bottom:12px;font-weight:500}
+  </style>
+</head>
+<body>
+  <h2>Videollamada (Dev Local)</h2>
+  <div id="statusMessage"></div>
+
+  <section class="card" id="authCard">
+    <h3>Acceso</h3>
+    <div class="panel">
+      <label>Correo
+        <input id="loginEmail" type="email" placeholder="usuario@dominio.com">
+      </label>
+      <label>Contrasena
+        <input id="loginPassword" type="password" placeholder="********">
+      </label>
+      <button id="btnLogin">Iniciar sesion</button>
+      <button id="btnLogout" disabled>Salir</button>
+    </div>
+    <p id="authStatus">Ingresa tus credenciales para comenzar.</p>
+  </section>
+
+  <section class="card hidden" id="doctorPanel">
+    <h3>Panel Medico</h3>
+    <label class="inline">
+      <input type="checkbox" id="doctorAvailable">
+      Disponible para recibir consultas
+    </label>
+    <div class="panel">
+      <button id="btnRefreshCalls">Actualizar llamadas en espera</button>
+    </div>
+    <div id="waitingCalls" class="list"></div>
+  </section>
+
+  <section class="card hidden" id="patientPanel">
+    <h3>Panel Paciente</h3>
+    <label>Motivo / notas opcionales
+      <textarea id="patientNote" rows="2" placeholder="Describe brevemente el motivo de la consulta"></textarea>
+    </label>
+    <div class="panel">
+      <button id="btnRequestCall">Solicitar consulta</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="callPanel">
+    <h3>Llamada actual</h3>
+    <p id="callSummary">Aun no hay llamada asignada.</p>
+    <div class="panel">
+      <label>Room:
+        <input id="room" value="demo-123">
+      </label>
+      <label>Resolucion:
+        <select id="resolution">
+          <option value="qvga">320x240</option>
+          <option value="vga">640x480</option>
+          <option value="hd" selected>1280x720</option>
+          <option value="fhd">1920x1080</option>
+        </select>
+      </label>
+      <label>FPS:
+        <select id="fps">
+          <option>15</option>
+          <option selected>30</option>
+          <option>60</option>
+        </select>
+      </label>
+      <label>Bitrate (kbps):
+        <input id="bitrate" type="number" value="1200" min="150" step="50">
+      </label>
+      <label>Codec:
+        <select id="codec">
+          <option value="VP8" selected>VP8</option>
+          <option value="VP9">VP9</option>
+          <option value="H264">H264</option>
+        </select>
+      </label>
+      <button id="btnStart" disabled>Iniciar video</button>
+      <button id="btnHang" disabled>Colgar</button>
+    </div>
+  </section>
+
+  <section class="row">
+    <video id="local" autoplay playsinline muted></video>
+    <video id="remote" autoplay playsinline></video>
+  </section>
+</body>
+</html>

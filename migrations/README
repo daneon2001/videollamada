@@ -1,0 +1,7 @@
+Alembic migrations for videollamada-python.
+
+Commands of interest:
+
+- `alembic revision --autogenerate -m "message"`: create a new migration.
+- `alembic upgrade head`: apply pending migrations.
+- `alembic downgrade -1`: rollback last migration.
